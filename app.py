@@ -24,20 +24,25 @@ def login():
 def signup():
     return render_template('sign_up.html')
 
+@app.route('/detail')
+def detail():
+    plate_num = 0
+    plate = db.plates.find_one({'plate_num':plate_num}, {'_id': False})
+    comments = list(db.comments.find({}, {'_id': False}))
+    return render_template('detail.html', plate=plate, comments=comments)
+
 @app.route('/sp', methods=['GET'])
 def sp_get():
-    sp_list = list(db.seoul.find({}, {'_id': False}).sort('title'))
+
+    sp_list = list(db.plates.find({}, {'_id': False}).sort('title'))
 
     return jsonify({'sp_list': sp_list})
-
-# @app.route('/api/detail')
-# def api_detail():
 
 @app.route('/api/search', methods=['POST'])
 def api_search():
     keyword_receive = request.form['keyword_give']
 
-    search_list = list(db.seoul.find({'place': keyword_receive}, {'_id': False}).sort('title'))
+    search_list = list(db.plates.find({'place': keyword_receive}, {'_id': False}).sort('title'))
 
     return jsonify({'search_list': search_list})
 
@@ -75,7 +80,7 @@ def api_login():
     if result is not None:
         payload = {
             'id': id_receive,
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=5000)
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=60 * 60 * 24)
         }
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
 
@@ -87,24 +92,25 @@ def api_login():
 def api_comment():
     token_receive = request.cookies.get('mytoken')
     comment_receive = request.form['comment_give']
+    plate_num = request.form['plate_num']
 
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        user_info = db.user.find_one({"id": payload['id']})
+        user_info = db.users.find_one({"id": payload['id']})
 
         doc = {
             'id': user_info['id'],
-            'comment': comment_receive
+            'comment': comment_receive,
+            'plate_num': plate_num
         }
 
-        db.comment.insert_one(doc)
+        db.comments.insert_one(doc)
 
         return jsonify({'msg': 'success'})
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
-
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)

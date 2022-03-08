@@ -1,8 +1,6 @@
-import requests
 from bs4 import BeautifulSoup
 from pymongo import MongoClient
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
 import time
 
 client = MongoClient('mongodb+srv://test:sparta@cluster0.akqwn.mongodb.net/Cluster0?retryWrites=true&w=majority')
@@ -41,5 +39,4 @@ for i in range(1150):
         'content': content
     }
     db.plates.insert_one(doc)
-    # print(doc)
     plate_num += 1
