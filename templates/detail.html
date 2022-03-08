@@ -18,7 +18,11 @@
     <h1>{{ plate['title'] }}</h1>
     <h2>{{ plate['place'] }}</h2>
     <h3>{{ plate['content'] }}</h3>
-    <ul id="comment_list"></ul>
+    <ul id="comment_list">
+      {% for comment in comments %}
+      <h4>{{ comment['id'] }}: {{ comment['comment'] }}</h4>
+      {% endfor %}
+    </ul>
     <input type="text" id="comment" />
     <input
       type="button"

@@ -27,8 +27,8 @@ def signup():
 @app.route('/detail')
 def detail():
     plate_num = 0
-    plate = db.plates.find_one({'plate_num':plate_num}, {'_id': False})
-    comments = list(db.comments.find({}, {'_id': False}))
+    plate = db.plates.find_one({'plate_num': plate_num}, {'_id': False})
+    comments = list(db.comments.find({'plate_num': str(plate_num)}, {'_id': False}))
     return render_template('detail.html', plate=plate, comments=comments)
 
 @app.route('/sp', methods=['GET'])

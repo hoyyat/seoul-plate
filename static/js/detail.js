@@ -6,7 +6,7 @@ function comment(plateNum) {
     data: { comment_give: myComment, plate_num: plateNum },
     success: function (response) {
       if (response["msg"] === "success") {
-        temp_html = `<li>${$.cookie("mytoken")}: ${myComment}</li>`;
+        location.reload();
       }
     },
   });
