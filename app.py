@@ -18,7 +18,11 @@ def home():
 
 @app.route('/login')
 def login():
-    return render_template('login.html')
+    return render_template('log_in.html')
+
+@app.route('/signup')
+def signup():
+    return render_template('sign_up.html')
 
 @app.route('/sp', methods=['GET'])
 def sp_get():
@@ -40,13 +44,13 @@ def api_search():
 @app.route('/api/signup', methods=['POST'])
 def api_signup():
     id_receive = request.form['id_give']
-    pw_receive = request.form['pw_receive']
+    pw_receive = request.form['pw_give']
 
-    all_ids = list(db.users.find({}, {'_id': False}))['id']
+    all_users = list(db.users.find({}, {'_id': False}))
 
-    for id in all_ids:
-        if id == id_receive:
-            return jsonify({'msg': '중복된 아이디입니다.'})
+    for user in all_users:
+        if user['id'] == id_receive:
+            return jsonify({'result': 'fail', 'msg': '중복된 아이디입니다.'})
 
     pw_hash = hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()
 
@@ -57,12 +61,12 @@ def api_signup():
 
     db.users.insert_one(doc)
 
-    return jsonify({'msg': '회원가입 성공!'})
+    return jsonify({'result': 'success', 'msg': '회원가입 성공!'})
 
 @app.route('/api/login', methods=['POST'])
 def api_login():
     id_receive = request.form['id_give']
-    pw_receive = request.form['pw_receive']
+    pw_receive = request.form['pw_give']
 
     pw_hash = hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()
 
@@ -73,7 +77,7 @@ def api_login():
             'id': id_receive,
             'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=5000)
         }
-        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('utf-8')
+        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
 
         return jsonify({'result': 'success', 'token': token})
     else:
