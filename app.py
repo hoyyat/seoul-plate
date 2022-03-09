@@ -35,11 +35,16 @@ def sp_get():
 
 @app.route('/api/search', methods=['POST'])
 def api_search():
-    keyword_receive = request.form['keyword_give']
+  keyword_receive = request.form['keyword_give']
 
-    search_list = list(db.seoul.find({'place': keyword_receive}, {'_id': False}).sort('title'))
+  search_list = list(db.plates.find({'place': keyword_receive}, {'_id': False}).sort('title'))
 
-    return jsonify({'search_list': search_list})
+  return jsonify({'search_list': search_list})
+
+@app.route('/main')
+def mainpage():
+    return render_template('main page.html')
+
 
 @app.route('/api/signup', methods=['POST'])
 def api_signup():
@@ -104,7 +109,6 @@ def api_comment():
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
-
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
