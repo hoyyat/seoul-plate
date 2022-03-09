@@ -1,5 +1,5 @@
 function comment(plateNum) {
-  const myComment = $("#comment").val();
+  const myComment = $("#comment_input").val();
   $.ajax({
     type: "POST",
     url: "/api/comment",

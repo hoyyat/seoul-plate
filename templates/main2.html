@@ -117,10 +117,17 @@
       .card-img {
         width: 348px;
         height: 287px;
+        cursor: pointer;
       }
 
       .iimg {
         margin-bottom: 30px;
+      }
+      .card-title {
+        cursor: pointer;
+      }
+      .card-text {
+        cursor: pointer;
       }
     </style>
   </head>
@@ -161,10 +168,15 @@
               src="{{ plate['img'] }}"
               class="card-img-top card-img"
               alt="..."
+              onclick="detail({{ plate['plate_num'] }})"
             />
             <div class="card-body">
-              <h5 class="card-title">{{ plate['title'] }}</h5>
-              <p class="card-text">{{ plate['place']}}</p>
+              <h5 class="card-title" onclick="detail({{ plate['plate_num'] }})">
+                {{ plate['title'] }}
+              </h5>
+              <p class="card-text" onclick="detail({{ plate['plate_num'] }})">
+                {{ plate['place']}}
+              </p>
             </div>
           </div>
         </div>
