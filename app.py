@@ -1,4 +1,5 @@
 import certifi
+
 ca = certifi.where()
 
 from flask import Flask, render_template, request, jsonify, redirect, url_for
@@ -6,7 +7,11 @@ from flask import Flask, render_template, request, jsonify, redirect, url_for
 app = Flask(__name__)
 
 from pymongo import MongoClient
-client = MongoClient('mongodb+srv://test:sparta@cluster0.akqwn.mongodb.net/Cluster0?retryWrites=true&w=majority')
+import certifi
+
+ca = certifi.where()
+client = MongoClient('mongodb+srv://test:sparta@cluster0.akqwn.mongodb.net/Cluster0?retryWrites=true&w=majority',
+                     tlsCAFile=ca)
 db = client.dbsparta
 
 SECRET_KEY = 'SP'
@@ -15,41 +20,49 @@ import jwt
 import datetime
 import hashlib
 
+
 @app.route('/')
 def home():
     return render_template('index.html')
+
 
 @app.route('/login')
 def login():
     return render_template('log_in.html')
 
+
 @app.route('/signup')
 def signup():
     return render_template('sign_up.html')
 
+
 @app.route('/detail')
 def detail():
-    plate_num = request.args.get('plate_num')
-    plate = db.plates.find_one({'plate_num': int(plate_num)}, {'_id': False})
+    plate_num = 0
+    plate = db.plates.find_one({'plate_num': plate_num}, {'_id': False})
     comments = list(db.comments.find({'plate_num': str(plate_num)}, {'_id': False}))
     return render_template('detail.html', plate=plate, comments=comments)
+
 
 @app.route('/main2')
 def main2():
     plate = list(db.plates.find({}, {'_id': False}).sort('title'))
     return render_template('main2.html', plates=plate)
 
+
 @app.route('/search')
 def search():
-    select = request.args.get('select') # url로 파라미터 받을때
+    select = request.args.get('select')
     keyword = request.args.get('keyword')
     print(select, keyword)
     plates = list(db.plates.find({str(select): keyword}, {'_id': False}).sort('title'))
-    return render_template('search.html', plates=plates)
+    print(plates)
+    return render_template('main2.html', plates=plates)
+
 
 # @app.route('/api/search_title_place', methods=['POST'])
 # def api_search_title_place():
-#     key_receive = request.form['key_give'] # Ajax로 받을때
+#     key_receive = request.form['key_give']
 #     select_receive = request.form['select_give']
 #
 #     if 'title' == select_receive:
@@ -59,10 +72,10 @@ def search():
 
 @app.route('/sp', methods=['GET'])
 def sp_get():
-
     sp_list = list(db.plates.find({}, {'_id': False}).sort('title'))
 
     return jsonify({'sp_list': sp_list})
+
 
 @app.route('/api/search', methods=['POST'])
 def api_search():
@@ -71,6 +84,7 @@ def api_search():
     search_list = list(db.plates.find({'place': keyword_receive}, {'_id': False}).sort('title'))
 
     return jsonify({'search_list': search_list})
+
 
 @app.route('/api/signup', methods=['POST'])
 def api_signup():
@@ -94,6 +108,18 @@ def api_signup():
 
     return jsonify({'result': 'success', 'msg': '회원가입 성공!'})
 
+
+@app.route('/sign_up/check_dup', methods=['POST'])
+def check_dup():
+
+    id_receive = request.form['id_give']
+    exists = bool(db.users.find_one({"id": id_receive}))
+    print(exists)
+    return jsonify({'result': 'success', 'exists': exists})
+
+
+
+
 @app.route('/api/login', methods=['POST'])
 def api_login():
     id_receive = request.form['id_give']
@@ -113,6 +139,7 @@ def api_login():
         return jsonify({'result': 'success', 'token': token})
     else:
         return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
+
 
 @app.route('/api/comment', methods=['POST'])
 def api_comment():
@@ -137,6 +164,7 @@ def api_comment():
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
