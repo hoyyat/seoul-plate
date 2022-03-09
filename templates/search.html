@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+  </head>
+  <body>
+    {% for plate in plates %}
+    <img id="thumbnail" src="{{ plate['img'] }}" alt="썸네일" />
+    <h1>{{ plate['title'] }}</h1>
+    <h2>{{ plate['place'] }}</h2>
+    <h3>{{ plate['content'] }}</h3>
+    {% endfor %}
+  </body>
+</html>

@@ -39,20 +39,23 @@ def main2():
     plate = list(db.plates.find({}, {'_id': False}).sort('title'))
     return render_template('main2.html', plates=plate)
 
+@app.route('/search')
+def search():
+    select = request.args.get('select')
+    keyword = request.args.get('keyword')
+    print(select, keyword)
+    plates = list(db.plates.find({str(select): keyword}, {'_id': False}).sort('title'))
+    return render_template('search.html', plates=plates)
+
 @app.route('/api/search_title_place', methods=['POST'])
 def api_search_title_place():
     key_receive = request.form['key_give']
     select_receive = request.form['select_give']
 
     if 'title' == select_receive:
-        plate = list(db.plates.find({'title': key_receive}, {'_id': False}).sort('title'))
-        print(plate)
-        return jsonify({'plates': plate})
+        return jsonify({'select': 'title', 'keyword': key_receive})
     else:
-        plate = list(db.plates.find({'place': key_receive}, {'_id': False}).sort('title'))
-        print(plate)
-        return jsonify({'plates': plate})
-
+        return jsonify({'select': 'place', 'keyword': key_receive})
 
 @app.route('/sp', methods=['GET'])
 def sp_get():
