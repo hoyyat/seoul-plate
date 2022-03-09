@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request, jsonify, redirect, url_for
 import certifi
 ca = certifi.where()
+
+from flask import Flask, render_template, request, jsonify, redirect, url_for
 
 app = Flask(__name__)
 
@@ -40,7 +41,7 @@ def main2():
 
 @app.route('/search')
 def search():
-    select = request.args.get('select')
+    select = request.args.get('select') # url로 파라미터 받을때
     keyword = request.args.get('keyword')
     print(select, keyword)
     plates = list(db.plates.find({str(select): keyword}, {'_id': False}).sort('title'))
