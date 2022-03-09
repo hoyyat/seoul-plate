@@ -28,8 +28,8 @@ def signup():
 
 @app.route('/detail')
 def detail():
-    plate_num = 0
-    plate = db.plates.find_one({'plate_num': plate_num}, {'_id': False})
+    plate_num = request.args.get('plate_num')
+    plate = db.plates.find_one({'plate_num': int(plate_num)}, {'_id': False})
     comments = list(db.comments.find({'plate_num': str(plate_num)}, {'_id': False}))
     return render_template('detail.html', plate=plate, comments=comments)
 
@@ -45,16 +45,6 @@ def search():
     print(select, keyword)
     plates = list(db.plates.find({str(select): keyword}, {'_id': False}).sort('title'))
     return render_template('search.html', plates=plates)
-
-@app.route('/api/search_title_place', methods=['POST'])
-def api_search_title_place():
-    key_receive = request.form['key_give']
-    select_receive = request.form['select_give']
-
-    if 'title' == select_receive:
-        return jsonify({'select': 'title', 'keyword': key_receive})
-    else:
-        return jsonify({'select': 'place', 'keyword': key_receive})
 
 @app.route('/sp', methods=['GET'])
 def sp_get():
