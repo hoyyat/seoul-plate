@@ -1,9 +1,11 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 
 app = Flask(__name__)
-
 from pymongo import MongoClient
-client = MongoClient('mongodb+srv://test:sparta@cluster0.akqwn.mongodb.net/Cluster0?retryWrites=true&w=majority')
+import certifi
+
+ca = certifi.where()
+client = MongoClient('mongodb+srv://test:sparta@cluster0.akqwn.mongodb.net/Cluster0?retryWrites=true&w=majority',tlsCAFile=ca)
 db = client.dbsparta
 
 SECRET_KEY = 'SP'
@@ -31,6 +33,26 @@ def detail():
     comments = list(db.comments.find({'plate_num': str(plate_num)}, {'_id': False}))
     return render_template('detail.html', plate=plate, comments=comments)
 
+@app.route('/main2')
+def main2():
+    plate = list(db.plates.find({}, {'_id': False}).sort('title'))
+    return render_template('main2.html', plates=plate)
+
+@app.route('/api/search_title_place', methods=['POST'])
+def api_search_title_place():
+    key_receive = request.form['key_give']
+    select_receive = request.form['select_give']
+
+    if 'title' == select_receive:
+        plate = list(db.plates.find({'title': key_receive}, {'_id': False}).sort('title'))
+        print(plate)
+        return jsonify({'plates': plate})
+    else:
+        plate = list(db.plates.find({'place': key_receive}, {'_id': False}).sort('title'))
+        print(plate)
+        return jsonify({'plates': plate})
+
+
 @app.route('/sp', methods=['GET'])
 def sp_get():
 
@@ -41,7 +63,6 @@ def sp_get():
 @app.route('/api/search', methods=['POST'])
 def api_search():
     keyword_receive = request.form['keyword_give']
-
     search_list = list(db.plates.find({'place': keyword_receive}, {'_id': False}).sort('title'))
 
     return jsonify({'search_list': search_list})
