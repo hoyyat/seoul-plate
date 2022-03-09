@@ -1,9 +1,12 @@
+import certifi
+ca = certifi.where()
+
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 
 app = Flask(__name__)
 
 from pymongo import MongoClient
-client = MongoClient('mongodb+srv://test:sparta@cluster0.akqwn.mongodb.net/Cluster0?retryWrites=true&w=majority')
+client = MongoClient('mongodb+srv://test:sparta@cluster0.akqwn.mongodb.net/Cluster0?retryWrites=true&w=majority', tlsCAFile=ca)
 db = client.dbsparta
 
 SECRET_KEY = 'SP'
