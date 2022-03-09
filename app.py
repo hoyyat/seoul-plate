@@ -1,9 +1,12 @@
+import certifi
 from flask import Flask, render_template, request, jsonify, redirect, url_for
+import certifi
+ca = certifi.where()
 
 app = Flask(__name__)
 
 from pymongo import MongoClient
-client = MongoClient('mongodb+srv://test:sparta@cluster0.akqwn.mongodb.net/Cluster0?retryWrites=true&w=majority')
+client = MongoClient('mongodb+srv://test:sparta@cluster0.akqwn.mongodb.net/Cluster0?retryWrites=true&w=majority', tlsCAFile=ca)
 db = client.dbsparta
 
 SECRET_KEY = 'SP'
@@ -38,18 +41,35 @@ def sp_get():
 
     return jsonify({'sp_list': sp_list})
 
-@app.route('/api/search', methods=['POST'])
-def api_search():
-    keyword_receive = request.form['keyword_give']
-
-    search_list = list(db.plates.find({'place': keyword_receive}, {'_id': False}).sort('title'))
-  search_list = list(db.plates.find({'place': keyword_receive}, {'_id': False}).sort('title'))
-
-    return jsonify({'search_list': search_list})
-
 @app.route('/main')
 def mainpage():
     return render_template('main page.html')
+
+#@app.route('/api/search/', methods=['GET'])
+#def api_search():
+#    keyword_receive = request.form['keyword_give']
+
+#    search_list = list(db.plates.find({'place': keyword_receive}, {'_id': False}).sort('title'))
+
+#    return jsonify({'search_list': search_list})
+
+@app.route('/api/search/<keyword>')
+def api_search():
+    search_list = list(db.plates.find({}, {'_id': False}).sort('title'))
+    result = search_list.json()
+    print(result)
+    return render_template("search page.html", result=result)
+
+#@app.route('/search')
+#def mainpage():
+#    return render_template('search page.html')
+
+
+@app.route('/search')
+def api_search():
+    search_list = list(db.plates.find({}, {'_id': False}))
+
+    return render_template('search page.html', serch_list=search_list)
 
 
 @app.route('/api/signup', methods=['POST'])
