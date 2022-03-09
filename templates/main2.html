@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sparta Vocabulary Notebook</title>
+    <meta property="og:title" content="Sparta Vocabulary Notebook" />
+    <meta property="og:description" content="mini project for Web Plus" />
+    <meta
+      property="og:image"
+      content="{{ url_for('static', filename='logo_red.png') }}"
+    />
+    <link
+      rel="shortcut icon"
+      href="{{ url_for('static', filename='favicon.ico') }}"
+      type="image/x-icon"
+    />
+    <link
+      rel="icon"
+      href="{{ url_for('static', filename='favicon.ico') }}"
+      type="image/x-icon"
+    />
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <link
+      href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+      rel="stylesheet"
+    />
+
+    <link
+      href='{{ url_for("static", filename="mystyle.css") }}'
+      rel="stylesheet"
+    />
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+
+    <script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/main2.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.cookie.js') }}"></script>
+
+    <style>
+      .search-box {
+        width: 70%;
+        margin: 50px auto;
+        max-width: 700px;
+      }
+
+      .table th {
+        border-top-style: none;
+      }
+
+      td {
+        background-color: white;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+
+      td > a,
+      a:visited,
+      a:hover,
+      a:active {
+        color: black;
+      }
+
+      tr.highlight > td {
+        background-color: #e8344e;
+        color: white;
+      }
+
+      tr.highlight a {
+        color: white;
+      }
+
+      thead:first-child tr:first-child th:first-child {
+        border-radius: 10px 0 0 0;
+      }
+
+      thead:first-child tr:first-child th:last-child {
+        border-radius: 0 10px 0 0;
+      }
+
+      tbody:last-child tr:last-child td:first-child {
+        border-radius: 0 0 0 10px;
+      }
+
+      tbody:last-child tr:last-child td:last-child {
+        border-radius: 0 0 10px 0;
+      }
+
+      .wrap {
+        size: 2000px;
+        margin: auto;
+        padding-left: 100px;
+      }
+
+      .card {
+        width: 350px;
+      }
+
+      .card-img {
+        width: 348px;
+        height: 287px;
+      }
+
+      .iimg {
+        margin-bottom: 30px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          <img
+            src="/docs/5.0/assets/brand/bootstrap-logo.svg"
+            alt=""
+            width="30"
+            height="24"
+            class="d-inline-block align-text-top"
+          />
+          서울플레이트
+        </a>
+      </div>
+    </nav>
+    <div class="wrap">
+      <div class="banner" onclick="window.location.href = '/'"></div>
+      <div class="search-box d-flex justify-content-center">
+        <input id="keyword" class="form-control" style="margin-right: 0.5rem" />
+        <select id="searchSelect">
+          <option value="title">title</option>
+          <option value="place">place</option>
+        </select>
+        <button class="btn btn-light" onclick="search()">
+          <i class="fa fa-search"></i>
+        </button>
+      </div>
+    </div>
+    <div class="wrap">
+      <div class="row row-cols-1 row-cols-md-2 g-4">
+        {% for plate in plates %}
+        <div class="col iimg">
+          <div class="card">
+            <img
+              src="{{ plate['img'] }}"
+              class="card-img-top card-img"
+              alt="..."
+            />
+            <div class="card-body">
+              <h5 class="card-title">{{ plate['title'] }}</h5>
+              <p class="card-text">{{ plate['place']}}</p>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </body>
+</html>
