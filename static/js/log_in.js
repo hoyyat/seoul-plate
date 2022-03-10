@@ -1,4 +1,5 @@
-function login() {
+
+function login() { // 로그인 함수 만들어서 데이터 넘겨줌
   $.ajax({
     type: "POST",
     url: "api/login",

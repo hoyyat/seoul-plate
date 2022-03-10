@@ -1,4 +1,4 @@
-function comment(plateNum) {
+function comment(plateNum) { // comment 데이터를 api/comment로 넘겨줌
   const myComment = $("#comment_input").val();
   $.ajax({
     type: "POST",
