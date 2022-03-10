@@ -46,10 +46,10 @@ def search():
     select = request.args.get('select') # url로 파라미터 받을때
     keyword = request.args.get('keyword')
     print(select, keyword)
-    plates = list(db.plates.find({str(select): keyword}, {'_id': False}))
+    plates = list(db.plates.find({str(select): {'$regex':keyword}}, {'_id': False}))
     return render_template('search.html', plates=plates)
 
-# @app.route('/api/search_title_place', methods=['POST'])
+# @app.route('/api/search_title_place', methods=['POST'])D
 # def api_search_title_place():
 #     key_receive = request.form['key_give'] # Ajax로 받을때
 #     select_receive = request.form['select_give']

@@ -5,7 +5,7 @@ function signup() {
     // const formData = $('.joinForm').serialize();
     // console.log(formData.get('email')
     if (!joinCheck) {
-        alert("이메일중복체크를해주세요")
+        alert("이메일 중복체크를 해주세요.")
         return;
     }
 
@@ -70,7 +70,7 @@ function check_dup() {
         return;
     }
     if (!is_nickname(email)) {
-        $("#help-email").text("이메일형식으로 써주세요").removeClass("is-safe").addClass("is-danger")
+        $("#help-email").text("이메일 형식으로 써주세요.").removeClass("is-safe").addClass("is-danger")
         $("#email").focus()
         return;
     }
