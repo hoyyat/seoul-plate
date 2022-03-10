@@ -38,27 +38,27 @@ def signup():
 
 @app.route('/detail')
 def detail():
-    plate_num = 0
-    plate = db.plates.find_one({'plate_num': plate_num}, {'_id': False})
+    plate_num = request.args.get('plate_num')
+    plate = db.plates.find_one({'plate_num': int(plate_num)}, {'_id': False})
     comments = list(db.comments.find({'plate_num': str(plate_num)}, {'_id': False}))
     return render_template('detail.html', plate=plate, comments=comments)
 
 
 @app.route('/main2')
 def main2():
-    plate = list(db.plates.find({}, {'_id': False}).sort('title'))
-    return render_template('main2.html', plates=plate)
+    plates = list(db.plates.find({}, {'_id': False}).sort('title'))
+    comments = list(db.comments.find({}, {'_id': False}))
+    print(comments)
+    print(plates[0]['plate_num'])
+    return render_template('main2.html', plates=plates, comments=comments)
 
 
 @app.route('/search')
 def search():
     select = request.args.get('select')
     keyword = request.args.get('keyword')
-    print(select, keyword)
     plates = list(db.plates.find({str(select): keyword}, {'_id': False}).sort('title'))
-    print(plates)
     return render_template('main2.html', plates=plates)
-
 
 # @app.route('/api/search_title_place', methods=['POST'])
 # def api_search_title_place():
@@ -77,13 +77,13 @@ def sp_get():
     return jsonify({'sp_list': sp_list})
 
 
-@app.route('/api/search', methods=['POST'])
-def api_search():
-    keyword_receive = request.form['keyword_give']
-
-    search_list = list(db.plates.find({'place': keyword_receive}, {'_id': False}).sort('title'))
-
-    return jsonify({'search_list': search_list})
+# @app.route('/api/search', methods=['POST'])
+# def api_search():
+#     keyword_receive = request.form['keyword_give']
+#
+#     search_list = list(db.plates.find({'place': keyword_receive}, {'_id': False}).sort('title'))
+#
+#     return jsonify({'search_list': search_list})
 
 
 @app.route('/api/signup', methods=['POST'])

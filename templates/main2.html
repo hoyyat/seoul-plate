@@ -129,6 +129,14 @@
       .card-text {
         cursor: pointer;
       }
+      .card-bottom {
+        display: flex;
+        justify-content: space-between;
+      }
+      .comment_num{
+          padding-top: 1rem;
+          margin: 0;
+      }
     </style>
   </head>
   <body>
@@ -174,9 +182,18 @@
               <h5 class="card-title" onclick="detail({{ plate['plate_num'] }})">
                 {{ plate['title'] }}
               </h5>
-              <p class="card-text" onclick="detail({{ plate['plate_num'] }})">
-                {{ plate['place']}}
-              </p>
+              <div class="card-bottom">
+                <p class="card-text" onclick="detail({{ plate['plate_num'] }})">
+                  {{ plate['place']}}
+                </p>
+                {% set a = namespace(value=0) %}
+                {% for comment in comments %}
+                {% if comment['plate_num']|int == plate['plate_num'] %}
+                {% set a.value = a.value + 1 %}
+                {% endif %}
+                {% endfor %}
+                <p class="comment_num">댓글: {{ a.value }}개</p>
+              </div>
             </div>
           </div>
         </div>
