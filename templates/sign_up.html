@@ -1,149 +1,157 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8"/>
+  <head>
+    <meta charset="UTF-8" />
     <title>Sign Up</title>
     <script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/sign_up.js') }}"></script>
     <style>
-        * {
-            margin: 0px;
-            padding: 0px;
-            text-decoration: none;
-            font-family: sans-serif;
-        }
+      * {
+        margin: 0px;
+        padding: 0px;
+        text-decoration: none;
+        font-family: sans-serif;
+      }
 
-        .signup-form h1 {
-            font-size: 32px;
-            color: #fff;
-            text-align: center;
-            padding: 100px;
-        }
+      .signup-form h1 {
+        font-size: 32px;
+        color: #fff;
+        text-align: center;
+        padding: 100px;
+      }
 
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: url("https://search.pstatic.net/common/?src=http%3A%2F%2Fshop1.phinf.naver.net%2F20220212_138%2F1644666478145kdKDR_JPEG%2F45802305949737304_1836753438.jpg&type=sc960_832") no-repeat center;
-            background-size: cover;
-        }
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: url("https://search.pstatic.net/common/?src=http%3A%2F%2Fshop1.phinf.naver.net%2F20220212_138%2F1644666478145kdKDR_JPEG%2F45802305949737304_1836753438.jpg&type=sc960_832")
+          no-repeat center;
+        background-size: cover;
+      }
 
-        .joinForm {
-            position: absolute;
-            width: 400px;
-            height: 400px;
-            text-align: center;
-            top: 40%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            border-radius: 15px;
-        }
+      .joinForm {
+        position: absolute;
+        width: 400px;
+        height: 400px;
+        text-align: center;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 15px;
+      }
 
-        .textForm {
-            border-bottom: 2px solid #adadad;
-            margin: 30px;
-            padding: 10px 10px;
-        }
+      .textForm {
+        border-bottom: 2px solid #adadad;
+        margin: 30px;
+        padding: 10px 10px;
+      }
 
-        .pw {
-            width: 100%;
-            border: none;
-            outline: none;
-            color: #636e72;
-            font-size: 16px;
-            height: 25px;
-            background: none;
-        }
+      .pw {
+        width: 100%;
+        border: none;
+        outline: none;
+        color: #636e72;
+        font-size: 16px;
+        height: 25px;
+        background: none;
+      }
 
-        .email {
-            width: 70%;
-            border: none;
-            outline: none;
-            color: #636e72;
-            font-size: 16px;
-            height: 25px;
-            background: none;
-        }
+      .email {
+        width: 70%;
+        border: none;
+        outline: none;
+        color: #636e72;
+        font-size: 16px;
+        height: 25px;
+        background: none;
+      }
 
-        .btn {
-            position: relative;
-            left: 40%;
-            transform: translateX(-50%);
-            margin-right: 26px;
-            width: 65px;
-            height: 40px;
-            background: linear-gradient(125deg, #81ecec, #6c5ce7, #81ecec);
-            background-position: left;
-            background-size: 200%;
-            color: white;
-            font-weight: bold;
-            border: none;
-            cursor: pointer;
-            transition: 0.4s;
-            display: inline;
-        }
+      .btn {
+        position: relative;
+        left: 40%;
+        transform: translateX(-50%);
+        margin-right: 26px;
+        width: 65px;
+        height: 40px;
+        background: linear-gradient(125deg, #81ecec, #6c5ce7, #81ecec);
+        background-position: left;
+        background-size: 200%;
+        color: white;
+        font-weight: bold;
+        border: none;
+        cursor: pointer;
+        transition: 0.4s;
+        display: inline;
+      }
 
-        .btn:hover {
-            background-position: right;
-        }
+      .btn:hover {
+        background-position: right;
+      }
 
-        .btn2 {
-            left: 50%;
-            transform: translateX(-50%);
-            margin-left: 99px;
-            width: 100px;
-            height: 40px;
-            background: linear-gradient(125deg, #81ecec, #6c5ce7, #81ecec);
-            background-position: left;
-            background-size: 200%;
-            color: white;
-            font-weight: bold;
-            border: none;
-            cursor: pointer;
-            transition: 0.4s;
-            display: inline;
-        }
-
+      .btn2 {
+        left: 50%;
+        transform: translateX(-50%);
+        margin-left: 99px;
+        width: 100px;
+        height: 40px;
+        background: linear-gradient(125deg, #81ecec, #6c5ce7, #81ecec);
+        background-position: left;
+        background-size: 200%;
+        color: white;
+        font-weight: bold;
+        border: none;
+        cursor: pointer;
+        transition: 0.4s;
+        display: inline;
+      }
     </style>
-</head>
-<body>
-<section class="signup-form">
-    <h1>Seoul Plate</h1>
-    <form method="POST" class="joinForm">
+  </head>
+  <body>
+    <section class="signup-form">
+      <h1>Seoul Plate</h1>
+      <form method="POST" class="joinForm">
         <div class="textForm">
-            <input id="email" name="email" type="text" class="email" placeholder="이메일" maxlength="20"/>
-            <button onclick="check_dup()" type="button" class="btn btn-info">중복확인</button>
+          <input
+            id="email"
+            name="email"
+            type="text"
+            class="email"
+            placeholder="이메일"
+            maxlength="20"
+          />
+          <button onclick="check_dup()" type="button" class="btn btn-info">
+            중복확인
+          </button>
         </div>
-         <p id="help-email" class="help is-safe"></p>
-
+        <p id="help-email" class="help is-safe"></p>
 
         <div class="textForm">
-            <input
-                    id="loginPw"
-                    name="loginPw"
-                    type="password"
-                    class="pw"
-                    placeholder="비밀번호"
-            />
+          <input
+            id="loginPw"
+            name="loginPw"
+            type="password"
+            class="pw"
+            placeholder="비밀번호"
+          />
         </div>
         <p id="help-password" class="help"></p>
         <div class="textForm">
-            <input
-                    id="loginPwConfirm"
-                    name="loginPwConfirm"
-                    type="password"
-                    class="pw"
-                    placeholder="비밀번호 확인"
-            />
+          <input
+            id="loginPwConfirm"
+            name="loginPwConfirm"
+            type="password"
+            class="pw"
+            placeholder="비밀번호 확인"
+          />
         </div>
         <p id="help-password2" class="help"></p>
         <input
-                type="button"
-                class="btn2"
-                onclick="signup(); return false"
-                value="회원가입완료"
+          type="button"
+          class="btn2"
+          onclick="signup(); return false"
+          value="회원가입완료"
         />
-    </form>
-</section>
-</body>
+      </form>
+    </section>
+  </body>
 </html>

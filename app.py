@@ -48,8 +48,6 @@ def detail():
 def main2():
     plates = list(db.plates.find({}, {'_id': False}).sort('title'))
     comments = list(db.comments.find({}, {'_id': False}))
-    print(comments)
-    print(plates[0]['plate_num'])
     return render_template('main2.html', plates=plates, comments=comments)
 
 
