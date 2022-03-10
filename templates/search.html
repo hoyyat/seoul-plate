@@ -17,12 +17,10 @@
         <script src="{{ url_for('static', filename='js/main2.js')}}"></script>
         <script src="{{ url_for('static', filename='js/jquery.cookie.js') }}"></script>
         <style>
-            .header-search {
-                display: flex;
-                justify-content: center;
-                margin: 0px auto;
-                width: 600px;
-
+            .search-box {
+                width: 70%;
+                margin: 50px auto;
+                max-width: 700px;
             }
             .card {
                 display: flex;
@@ -32,6 +30,18 @@
             .card-text {
                 font-size: 10px;
             }
+            .cards-box {
+            display: flex;
+            justify-content: space-between;
+            margin: 0 70px;
+            margin-top: 65px;
+            flex-wrap: wrap;
+            }
+            .wrap {
+                size: 2000px;
+                margin: auto;
+                padding-left: 100px;
+            }
         </style>
         <script>
             function detail(plate_num) {
@@ -39,32 +49,48 @@
             }
         </script>
     </head>
-  <body>
-      <header>
-          <nav class="navbar navbar-light bg-light">
-             <div class="container-fluid">
-                <a class="navbar-brand" href="#">
-                   <img
+    <body>
+        <header>
+            <nav class="navbar navbar-light bg-light">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="#">
+                    <img
                        src="/docs/5.0/assets/brand/bootstrap-logo.svg"
                        alt=""
                        width="30"
                        height="24"
                        class="d-inline-block align-text-top"
-                   />
-                   서울플레이트
-                </a>
-             </div>
-          </nav>
-      </header>
-         {% for plate in plates %}
-            <div class="card" id="card" style="width: 18rem;">
-                <img src="{{ plate['img'] }}" onclick="detail(plate_num)" class="card-img-top" alt="...">
-
-                <div class="card-body">
-                <h5 class="card-title">{{ plate['title'] }}</h5>
-                <p class="card-text"><span style="font-size: 15px;">메뉴  </span>{{ plate['content'] }}</p>
+                    />
+                    서울플레이트
+                    </a>
                 </div>
+            </nav>
+            <div class="wrap">
+               <div class="banner" onclick="window.location.href = '/'"></div>
+                  <div class="search-box d-flex justify-content-center">
+                     <input id="keyword" class="form-control" style="margin-right: 0.5rem" />
+                     <select id="searchSelect">
+                       <option value="title">title</option>
+                       <option value="place">place</option>
+                     </select>
+                     <button class="btn btn-light" onclick="search()">
+                       <i class="fa fa-search"></i>
+                     </button>
+                  </div>
             </div>
-         {% endfor %}
-  </body>
+        </header>
+        <section class="contents">
+            <div class="cards-box">
+                 {% for plate in plates %}
+                    <div class="card" id="card" style="width: 18rem;">
+                        <span style="cursor: pointer"><img src="{{ plate['img'] }}" onclick="detail({{ plate['plate_num'] }})" class="card-img-top" alt="..."></span>
+                        <div class="card-body">
+                        <h5 class="card-title" onclick="detail({{ plate['plate_num'] }})">{{ plate['title'] }}</h5>
+                        <p class="card-text" onclick="detail({{ plate['plate_num'] }})"><span style="font-size: 15px;">메뉴  </span>{{ plate['content'] }}</p>
+                        </div>
+                    </div>
+                 {% endfor %}
+            </div>
+        </section>
+    </body>
 </html>
