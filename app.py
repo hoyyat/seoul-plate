@@ -1,4 +1,5 @@
 import certifi
+
 ca = certifi.where()
 
 from flask import Flask, render_template, request, jsonify, redirect, url_for
@@ -36,8 +37,10 @@ def detail():
 
 @app.route('/main2')
 def main2():
-    plate = list(db.plates.find({}, {'_id': False}).sort('title'))
-    return render_template('main2.html', plates=plate)
+    plates = list(db.plates.find({}, {'_id': False}).sort('title'))
+    comments = list(db.comments.find({}, {'_id': False}))
+    return render_template('main2.html', plates=plates, comments=comments)
+
 
 @app.route('/search')
 def search():
@@ -46,6 +49,16 @@ def search():
     print(select, keyword)
     plates = list(db.plates.find({str(select): keyword}, {'_id': False}).sort('title'))
     return render_template('search.html', plates=plates)
+
+# @app.route('/api/search_title_place', methods=['POST'])
+# def api_search_title_place():
+#     key_receive = request.form['key_give'] # Ajax로 받을때
+#     select_receive = request.form['select_give']
+#
+#     if 'title' == select_receive:
+#         return jsonify({'select': 'title', 'keyword': key_receive})
+#     else:
+#         return jsonify({'select': 'place', 'keyword': key_receive})
 
 @app.route('/sp', methods=['GET'])
 def sp_get():
@@ -83,6 +96,18 @@ def api_signup():
     db.users.insert_one(doc)
 
     return jsonify({'result': 'success', 'msg': '회원가입 성공!'})
+
+
+@app.route('/sign_up/check_dup', methods=['POST'])
+def check_dup():
+
+    id_receive = request.form['id_give']
+    exists = bool(db.users.find_one({"id": id_receive}))
+    print(exists)
+    return jsonify({'result': 'success', 'exists': exists})
+
+
+
 
 @app.route('/api/login', methods=['POST'])
 def api_login():
