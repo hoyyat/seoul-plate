@@ -45,7 +45,7 @@ function signup() {
         success: function (response) {
             if (response["result"] === "success") {
                 alert(response["msg"]);
-                window.location.href = "/login";
+                window.location.href = "/";
             } else {
                 alert(response["msg"]);
             }
