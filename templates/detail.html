@@ -52,19 +52,19 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='css/detail.css')}}"
     />
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Brush+Script&display=swap" rel="stylesheet">
+    <style>
+        .logo {
+          font-size: 40px;
+          font-family: 'Nanum Brush Script', cursive;
+        }
+    </style>
   </head>
   <body>
     <nav class="navbar navbar-light bg-light">
       <div class="container-fluid">
-        <a class="navbar-brand" href="/main2">
-          <img
-            src="/docs/5.0/assets/brand/bootstrap-logo.svg"
-            alt=""
-            width="30"
-            height="24"
-            class="d-inline-block align-text-top"
-          />
-          서울플레이트
+        <a href="/main2" class="logo" style="text-decoration: none; color: inherit;">
+                  Seoul Plate
         </a>
       </div>
     </nav>

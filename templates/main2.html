@@ -38,6 +38,7 @@
     />
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Brush+Script&display=swap" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
@@ -57,7 +58,7 @@
     <style>
       .search-box {
         width: 70%;
-        margin: 50px auto;
+        margin: 50px 240px 50px ;
         max-width: 700px;
       }
 
@@ -99,7 +100,13 @@
       tbody:last-child tr:last-child td:first-child {
         border-radius: 0 0 0 10px;
       }
-
+        .header {
+             background-image: url("https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMTA2MDFfMjg4%2FMDAxNjIyNTI0NTA3NzYx.QcT8VNvJvuOLU0CvdYXGRNYS34DUUhyz7P6yC6xYIqcg.9skMB4Gc_T8aw63oAO6eZhKtcxNX_6XZGhQKvF2kCVAg.JPEG.hwang8529%2FHDG_5189%252B.jpg&type=sc960_832");
+            background-size: cover;
+            padding-top:1px;
+            height: 200px;
+            margin-bottom: 50px;
+        }
       .wrap {
         size: 2000px;
         margin: auto;
@@ -130,36 +137,53 @@
         padding-top: 1rem;
         margin: 0;
       }
+      .search-box d-flex justify-content-center{
+          padding-bottom: 100px;
+      }
+      .logo {
+          font-size: 40px;
+          margin-left: -50px;
+          margin-top: 120px;
+          font-family: 'Nanum Brush Script', cursive;
+      }
+      #login-box {
+          float: right;
+          width: 50px;
+          height: 50px;
+          color: Orange;
+          margin-right: 20px;
+          margin-top: 5px;
+      }
+
     </style>
+
   </head>
   <body>
-    <nav class="navbar navbar-light bg-light">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="/main2">
-          <img
-            src="/docs/5.0/assets/brand/bootstrap-logo.svg"
-            alt=""
-            width="30"
-            height="24"
-            class="d-inline-block align-text-top"
-          />
-          서울플레이트
-        </a>
-      </div>
-    </nav>
-    <div class="wrap">
-      <div class="banner" onclick="window.location.href = '/'"></div>
-      <div class="search-box d-flex justify-content-center">
-        <input id="keyword" class="form-control" style="margin-right: 0.5rem" />
-        <select id="searchSelect">
-          <option value="title">title</option>
-          <option value="place">place</option>
-        </select>
-        <button class="btn btn-light" onclick="search()">
-          <i class="fa fa-search"></i>
-        </button>
-      </div>
-    </div>
+      <header class="header">
+          <div class="wrap">
+              <div class="banner" onclick="window.location.href = '/'"></div>
+              <a href="/main2" class="logo" style="text-decoration: none; color: inherit;">
+                  Seoul Plate
+              </a>
+              <a href="/">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-down " id="login-box" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd" d="M3.5 6a.5.5 0 0 0-.5.5v8a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5v-8a.5.5 0 0 0-.5-.5h-2a.5.5 0 0 1 0-1h2A1.5 1.5 0 0 1 14 6.5v8a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 14.5v-8A1.5 1.5 0 0 1 3.5 5h2a.5.5 0 0 1 0 1h-2z"/>
+                      <path fill-rule="evenodd" d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                  </svg>
+              </a>
+              <div class="search-box d-flex justify-content-center">
+                <input id="keyword" class="form-control" style="margin-right: 0.5rem" placeholder="지역, 음식적을 입력해주세요"/>
+                <select id="searchSelect">
+                  <option value="title">title</option>
+                  <option value="place">place</option>
+                </select>
+                <button class="btn btn-light" onclick="search()">
+                  <i class="fa fa-search"></i>
+                </button>
+              </div>
+          </div>
+      </header>
+
     <div class="wrap">
       <div class="row row-cols-1 row-cols-md-2 g-4">
         {% for plate in plates %}
