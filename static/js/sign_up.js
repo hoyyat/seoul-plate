@@ -45,7 +45,7 @@ function signup() {
         success: function (response) {
             if (response["result"] === "success") {
                 alert(response["msg"]);
-                window.location.href = "/login";
+                window.location.href = "/";
             } else {
                 alert(response["msg"]);
             }
@@ -102,6 +102,7 @@ function is_password(asValue) {
     var regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z!@#$%^&*]{8,20}$/;
     return regExp.test(asValue);
 }
+
 
 
 

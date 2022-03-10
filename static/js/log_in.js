@@ -7,7 +7,7 @@ function login() {
       if (response["result"] === "success") {
         $.cookie("mytoken", response["token"]);
         alert("로그인 완료!");
-        window.location.href = "/";
+        window.location.href = "/main2";
       } else {
         alert(response["msg"]);
       }

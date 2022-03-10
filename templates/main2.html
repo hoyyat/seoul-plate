@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sparta Vocabulary Notebook</title>
+    <title>Seoul Plate</title>
     <meta property="og:title" content="Sparta Vocabulary Notebook" />
     <meta property="og:description" content="mini project for Web Plus" />
     <meta
@@ -100,26 +100,19 @@
         border-radius: 0 0 0 10px;
       }
 
-      tbody:last-child tr:last-child td:last-child {
-        border-radius: 0 0 10px 0;
-      }
-
       .wrap {
         size: 2000px;
         margin: auto;
         padding-left: 100px;
       }
-
       .card {
         width: 350px;
       }
-
       .card-img {
         width: 348px;
         height: 287px;
         cursor: pointer;
       }
-
       .iimg {
         margin-bottom: 30px;
       }
@@ -133,16 +126,16 @@
         display: flex;
         justify-content: space-between;
       }
-      .comment_num{
-          padding-top: 1rem;
-          margin: 0;
+      .comment_num {
+        padding-top: 1rem;
+        margin: 0;
       }
     </style>
   </head>
   <body>
     <nav class="navbar navbar-light bg-light">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="/main2">
           <img
             src="/docs/5.0/assets/brand/bootstrap-logo.svg"
             alt=""
@@ -186,12 +179,9 @@
                 <p class="card-text" onclick="detail({{ plate['plate_num'] }})">
                   {{ plate['place']}}
                 </p>
-                {% set a = namespace(value=0) %}
-                {% for comment in comments %}
-                {% if comment['plate_num']|int == plate['plate_num'] %}
-                {% set a.value = a.value + 1 %}
-                {% endif %}
-                {% endfor %}
+                {% set a = namespace(value=0) %} {% for comment in comments %}
+                {% if comment['plate_num']|int == plate['plate_num'] %} {% set
+                a.value = a.value + 1 %} {% endif %} {% endfor %}
                 <p class="comment_num">댓글: {{ a.value }}개</p>
               </div>
             </div>

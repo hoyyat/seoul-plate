@@ -18,11 +18,11 @@ import hashlib
 
 @app.route('/')
 def home():
-    return render_template('index.html')
-
-@app.route('/login')
-def login():
     return render_template('log_in.html')
+
+# @app.route('/login')
+# def login():
+#     return render_template('log_in.html')
 
 @app.route('/signup')
 def signup():
@@ -37,17 +37,16 @@ def detail():
 
 @app.route('/main2')
 def main2():
-    plates = list(db.plates.find({}, {'_id': False}).sort('title'))
+    plates = list(db.plates.find({}, {'_id': False}))
     comments = list(db.comments.find({}, {'_id': False}))
     return render_template('main2.html', plates=plates, comments=comments)
-
 
 @app.route('/search')
 def search():
     select = request.args.get('select') # url로 파라미터 받을때
     keyword = request.args.get('keyword')
     print(select, keyword)
-    plates = list(db.plates.find({str(select): keyword}, {'_id': False}).sort('title'))
+    plates = list(db.plates.find({str(select): keyword}, {'_id': False}))
     return render_template('search.html', plates=plates)
 
 # @app.route('/api/search_title_place', methods=['POST'])
@@ -63,7 +62,7 @@ def search():
 @app.route('/sp', methods=['GET'])
 def sp_get():
 
-    sp_list = list(db.plates.find({}, {'_id': False}).sort('title'))
+    sp_list = list(db.plates.find({}, {'_id': False}))
 
     return jsonify({'sp_list': sp_list})
 
@@ -71,7 +70,7 @@ def sp_get():
 def api_search():
     keyword_receive = request.form['keyword_give']
 
-    search_list = list(db.plates.find({'place': keyword_receive}, {'_id': False}).sort('title'))
+    search_list = list(db.plates.find({'place': keyword_receive}, {'_id': False}))
 
     return jsonify({'search_list': search_list})
 
