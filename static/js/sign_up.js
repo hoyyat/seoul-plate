@@ -35,22 +35,6 @@ function signup() {
     } else {
         $("#help-password2").text("비밀번호가 일치합니다.").removeClass("is-danger").addClass("is-success")
     }
-    $.ajax({
-        type: "POST",
-        url: "/api/signup",
-        data: {
-            id_give: $(".email").val(),
-            pw_give: $("input[name=loginPw]").val(),
-        },  // 클라이언트 에서 서버 이메일 pw 저장
-        success: function (response) {
-            if (response["result"] === "success") {
-                alert(response["msg"]);
-                window.location.href = "/";
-            } else {
-                alert(response["msg"]);
-            }
-        },
-    });
 }
 // 이메일 정규식 사용
 function is_nickname(asValue) {

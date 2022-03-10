@@ -20,10 +20,6 @@ import hashlib
 def home():
     return render_template('log_in.html')
 
-# @app.route('/login')
-# def login():
-#     return render_template('log_in.html')
-
 @app.route('/signup')
 def signup():
     return render_template('sign_up.html')
@@ -31,7 +27,9 @@ def signup():
 @app.route('/detail')
 def detail():
     plate_num = request.args.get('plate_num')
+    # 게시글 사진, 이름, 위치, 메뉴
     plate = db.plates.find_one({'plate_num': int(plate_num)}, {'_id': False})
+    # 게시글의 댓글
     comments = list(db.comments.find({'plate_num': str(plate_num)}, {'_id': False}))
     return render_template('detail.html', plate=plate, comments=comments)
 
@@ -46,18 +44,10 @@ def search():
     select = request.args.get('select') # url로 파라미터 받을때
     keyword = request.args.get('keyword')
     print(select, keyword)
+    # select한 메뉴에 맞게 검색
+    # '$regex' -> keyword가 포함하는 것 검색
     plates = list(db.plates.find({str(select): {'$regex':keyword}}, {'_id': False}))
     return render_template('search.html', plates=plates)
-
-# @app.route('/api/search_title_place', methods=['POST'])D
-# def api_search_title_place():
-#     key_receive = request.form['key_give'] # Ajax로 받을때
-#     select_receive = request.form['select_give']
-#
-#     if 'title' == select_receive:
-#         return jsonify({'select': 'title', 'keyword': key_receive})
-#     else:
-#         return jsonify({'select': 'place', 'keyword': key_receive})
 
 @app.route('/sp', methods=['GET'])
 def sp_get():
@@ -81,10 +71,7 @@ def api_signup():
 
     all_users = list(db.users.find({}, {'_id': False}))
 
-    for user in all_users:
-        if user['id'] == id_receive:
-            return jsonify({'result': 'fail', 'msg': '중복된 아이디입니다.'})
-
+    # 비밀번호 암호화
     pw_hash = hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()
 
     doc = {
@@ -99,14 +86,11 @@ def api_signup():
 
 @app.route('/sign_up/check_dup', methods=['POST'])
 def check_dup():
-
     id_receive = request.form['id_give']
+    # 아이디 중복체크
     exists = bool(db.users.find_one({"id": id_receive}))
     print(exists)
     return jsonify({'result': 'success', 'exists': exists})
-
-
-
 
 @app.route('/api/login', methods=['POST'])
 def api_login():
@@ -117,12 +101,14 @@ def api_login():
 
     result = db.users.find_one({'id': id_receive, 'pw': pw_hash})
 
+    # 아이디, 패스워드가 맞는지 확인
     if result is not None:
         payload = {
             'id': id_receive,
             'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=60 * 60 * 24)
         }
-        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
+
+        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('utf-8')
 
         return jsonify({'result': 'success', 'token': token})
     else:
@@ -138,6 +124,7 @@ def api_comment():
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"id": payload['id']})
 
+        # 토큰을 활용하여 댓글 insert
         doc = {
             'id': user_info['id'],
             'comment': comment_receive,
